@@ -1,0 +1,89 @@
+body {
+    width: 100%;
+    height: 100vh;
+    background-color: #fafafa;
+}
+
+body .top-content {
+    width: 100%;
+    position: relative;
+}
+
+
+.body-content {
+    width: 100%;
+    margin: 0;
+}
+
+.dropdown .dropdown-trigger button{
+    width: 100%;
+}
+
+.dropdown .dropdown-menu{
+    width: 100%;
+    top: 50px;
+}
+.dropdown .dropdown-menu .dropdown-content .dropdown-item{
+    white-space: normal;
+}
+.dropdown .dropdown-menu .dropdown-content .dropdown-item.is-active{
+    cursor: not-allowed;
+}
+
+.button-github span {
+    margin-right: 10px !important;
+}
+
+
+
+
+
+
+.base-content .navbar .navbar-menu {
+    display: flex !important;
+    justify-content: center;
+    background-color: #fff;
+    box-shadow: 0 8px 16px rgb(10 10 10 / 10%);
+    padding: .5rem 0;
+}
+
+.base-content .navbar .navbar-menu .navbar-start {
+    display: flex !important;
+    margin: 0;
+}
+
+/* .base-content .menu.is-active {
+    width: 300px;
+    height: 100%;
+    z-index: 500;
+
+}
+
+.base-content .inner.menu-activo {
+    width: calc(100% - 300px);
+}
+
+.base-content .inner.menu-activo  {
+    width: calc(100% - 300px);
+}
+
+.base-content .inner {
+    width: 100%;
+}
+
+.shadow-area {
+    position: absolute;
+    display: none;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    opacity: 0.7;
+    z-index: 400;
+    background-color: #000;
+}
+
+@media (max-width: 768px) {
+    .shadow-area {
+        display: block;
+    }
+} */
