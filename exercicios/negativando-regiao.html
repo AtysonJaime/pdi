@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+    <head>
+        <meta charset="UTF-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>PDI - Exercícios</title>
+        <link rel="apple-touch-icon" sizes="180x180" href="../assets/img/apple-touch-icon.png">
+        <link rel="icon" type="image/png" sizes="32x32" href="../assets/img/favicon-16x16.png">
+        <link rel="icon" type="image/png" sizes="16x16" href="../assets/img/favicon-32x32.png">
+        
+        <!-- CCS Links -->
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
+        <link rel="stylesheet" href="https://pro.fontawesome.com/releases/v5.10.0/css/all.css" integrity="sha384-AYmEC3Yw5cVb3ZcuHtOA93w35dYTsvhLPVnYs9eStHfGJvOvKxVfELGroGkvsg+p" crossorigin="anonymous"/>
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.3/css/bulma.min.css">
+        <link rel="stylesheet" href="../assets/css/style.css">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.3.1/styles/atom-one-dark.min.css">
+    </head>
+    <body id='negativa-regiao'>
+        <section class="hero is-primary top-content">
+            <div class="hero-body">
+            <p class="title">
+                DCA0445 - Processamento Digital de Imagem
+            </p>
+            <p class="subtitle">
+                Aluno: Atyson Jaime de Sousa Martins
+            </p>
+            </div>
+        </section>
+        <section class="section body-content row">
+            <div class="dropdown col-lg-3 col-12 mb-4">
+                <div class="dropdown-trigger">
+                <button class="button button-dropdown" aria-haspopup="true" aria-controls="dropdown-menu">
+                    <span class="icon is-small">
+                        <i class="fas fa-book" aria-hidden="true"></i>
+                    </span>
+                    <span>Exercicios</span>
+                    <span class="icon is-small">
+                        <i class="fas fa-angle-down" aria-hidden="true"></i>
+                    </span>
+                </button>
+                </div>
+                <div class="dropdown-menu" id="dropdown-menu" role="menu">
+                <div class="dropdown-content">
+                    <a href="#" class="dropdown-item">
+                        Introdução
+                    </a>
+                    <hr class="dropdown-divider">
+                    <a href="/exercicios/negativando-regiao.html" class="dropdown-item is-active">
+                        1.0 - Negativando uma região
+                    </a>
+                    <!-- <a class="dropdown-item">
+                    2.0 - Alterando os quadrantes de uma imagem
+                    </a>
+                    <a href="#" class="dropdown-item">
+                    3.0 - Labeling: Encontrando as bolhas na imagem
+                    </a> -->
+                </div>
+                </div>
+            </div>
+            <div class="box col-lg-9 col-12">
+                <h2 class="title is-2 is-spaced"> 
+                    1.0 - Negativando uma região
+                </h2>
+                <div class="objetivo-content row">
+                    <h3 class="title is-4 is-spaced">1.1 - Objetivo</h3>
+                    <div class="col-lg-4 col-12 mt-3">
+                        <img class="img img-fluid" src="../assets/img/negativando-regiao/saida_esperada.png">
+                    </div>
+                    <div class="col-lg-8 col-12 mt-3">
+                        <p class="subtitle is-5 is-spaced">
+                            Utilizando o programa exemplos/pixels.cpp como referência, implemente um programa regions.cpp. 
+                            Esse programa deverá solicitar ao usuário as coordenadas de dois pontos P1 e P2 
+                            localizados dentro dos limites do tamanho da imagem e exibir que lhe for fornecida. 
+                            Entretanto, a região definida pelo retângulo de vértices opostos definidos pelos pontos P1 e P2 
+                            será exibida com o negativo da imagem na região correspondente. 
+                            O efeito é ilustrado na ao lado.
+                        </p>
+                    </div>
+                </div>
+                <div class="resolucao-content mt-5">
+                    <h3 class="title is-4 is-spaced">1.2 - Resolução</h3>
+                    <p class="subtitle is-6 is-spaced">
+                        <strong>OBS:</strong> Importante resaltar que os codigos aqui presentes estão em python. Ver explicação na página de introdução no menu ao lado.
+                    </p>
+                    <p class="subtitle is-6 is-spaced"> 
+                        A solução encontrada para resolver a questão foi a seguinte, para negativamos uma região da imagem
+                        basta pegar 255 é subtrair do valor do pixel na região. Dessa forma, por exemplo, se o valor do pixel for 0 teremos como resultado 255.
+                        Como também, se o pixel for 255 seu resultado será 0.
+                    </p>
+                    <p class="subtitle is-6 is-spaced">
+                        Assim, para facilitar, criei uma função chamada <code>negativa_img()</code> onde recebe como paramentro o pixel da imagem e retorna o valor negativado do pixel.
+                    </p>
+                    <p class="subtitle is-6 is-spaced">
+                        Abaixo, temos o código e o resultado no promp logo em seguida.
+                    </p>
+                    <pre class="code-content">
+                        <code>
+## A partir de dois pontos da matriz imagem fornecidos pelo usuario, 
+## a região da imagem deve ficar negativo;
+import cv2
+import sys
+
+## Definição da função
+def negativa_img(value):
+    return 255 - value
+
+## Cria as janelas
+cv2.namedWindow('Imagem Normal', cv2.WINDOW_AUTOSIZE)
+cv2.namedWindow('Imagem Negativa', cv2.WINDOW_AUTOSIZE)
+
+## Pega a imagem
+img = cv2.imread("../img/biel.png", cv2.IMREAD_GRAYSCALE)
+if (img is None):
+    sys.exit("Não conseguimos abrir a imagem.")
+
+## Seta os pontos e seus valores
+p1 = [0,0]
+p2 = [0,0]
+p1[0] = int(input("Digite a posição x do ponto 1: "))
+while ((p1[0] < 0) or (p1[0] > 255)):
+    print('Valor invalido para posição x \n')
+    p1[0] = int(input("Digite a posição x do ponto 1: "))
+
+p1[1] = int(input("Digite a posição y do ponto 1: "))
+while ((p1[1] < 0) or (p1[1] > 255)):
+    print('Valor invalido para posição y \n')
+    p1[1] = int(input("Digite a posição y do ponto 1: "))
+
+p2[0] = int(input("Digite a posição x do ponto 2: "))
+while ((p2[0] < p1[0]) or (p2[0] > 255)):
+    print('Valor invalido para posição x \n')
+    p2[0] = int(input("Digite a posição x do ponto 2: "))
+
+p2[1] = int(input("Digite a posição y do ponto 2: "))
+while ((p2[1] < p1[1]) or (p2[1] > 255)):
+    print('Valor invalido para posição y \n')
+    p2[1] = int(input("Digite a posição y do ponto 2: "))
+
+print('Pontos 01:')
+print("x >> ", p1[0], ' y >> ', p1[1])
+print('\nPontos 02:')
+print("x >> ", p2[0], ' y >> ', p2[1])
+
+## Mostra a imagem normal
+cv2.imshow('Imagem Normal', img)
+cv2.waitKey(0)
+
+print('Deixando negativo a região entre os dois pontos dados')
+
+## Realiza a trasformação da região em negativo
+img[p1[0]:p2[0],p1[1]:p2[1]] = negativa_img(img[p1[0]:p2[0],p1[1]:p2[1]]) 
+
+## Mostra a imagem Negativa
+cv2.imshow('Imagem Negativa', img)
+cv2.waitKey(0)
+cv2.destroyAllWindows()
+                        </code>
+                    </pre>
+                </div>
+                <div class="resultado-content mt-5">
+                    <h3 class="title is-4 is-spaced">1.2 - Resultado</h3>
+                    <div class="img-promp overflow-auto mb-5">
+                        <img class="img img-fluid" src="../assets/img/negativando-regiao/saida_promp.png">
+                    </div>
+                    <div class="img-result overflow-auto mb-5">
+                        <img class="img img-fluid" src="../assets/img/negativando-regiao/saida_final.png">
+                    </div>
+                </div>
+                <div class="content-button">
+                    <a 
+                        class="button is-link is-light is-spaced button-github" 
+                        href="#negativa-regiao" 
+                    >
+                    <span class="icon" style="color: var(--github);">
+                        <i class="fas fa-angle-up" aria-hidden="true"></i>
+                    </span>   
+                    Back to top!
+                </a>
+                </div>
+            </div>
+        </section>
+        <footer class="footer hero is-primary is-small">
+            <div class="content has-text-centered">
+            <p>
+                @2021, por Atyson Jaime.
+            </p>
+            </div>
+        </footer>
+        <!-- Script Links -->
+        <script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.min.js" integrity="sha384-QJHtvGhmr9XOIpI6YVutG+2QOK9T+ZnN4kzFN1RtK3zEFEIsxhlmWl5/YESvpZ13" crossorigin="anonymous"></script>
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.3.1/highlight.min.js"></script>
+        <script src="../assets/js/main.js"></script>
+        <script>hljs.highlightAll();</script>
+    </body>
+</html>
