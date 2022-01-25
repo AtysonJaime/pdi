@@ -1,0 +1,304 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+    <head>
+        <meta charset="UTF-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>PDI - Exercícios</title>
+        <link rel="apple-touch-icon" sizes="180x180" href="../../assets/img/apple-touch-icon.png">
+        <link rel="icon" type="image/png" sizes="32x32" href="../../assets/img/favicon-16x16.png">
+        <link rel="icon" type="image/png" sizes="16x16" href="../../assets/img/favicon-32x32.png">
+        
+        <!-- CCS Links -->
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
+        <link rel="stylesheet" href="https://pro.fontawesome.com/releases/v5.10.0/css/all.css" integrity="sha384-AYmEC3Yw5cVb3ZcuHtOA93w35dYTsvhLPVnYs9eStHfGJvOvKxVfELGroGkvsg+p" crossorigin="anonymous"/>
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.3/css/bulma.min.css">
+        <link rel="stylesheet" href="../../assets/css/style.css">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.3.1/styles/atom-one-dark.min.css">
+    </head>
+    <body id='dft'>
+        <section class="hero is-primary top-content">
+            <div class="hero-body">
+            <p class="title">
+                DCA0445 - Processamento Digital de Imagem
+            </p>
+            <p class="subtitle">
+                Aluno: Atyson Jaime de Sousa Martins
+            </p>
+            </div>
+        </section>
+        <section class="section body-content row">
+            <div class="dropdown col-lg-3 col-12 mb-4">
+                <div class="dropdown-trigger">
+                    <button class="button button-dropdown" aria-haspopup="true" aria-controls="dropdown-menu">
+                        <span class="icon is-small">
+                            <i class="fas fa-book" aria-hidden="true"></i>
+                        </span>
+                        <span>Exercicios</span>
+                        <span class="icon is-small">
+                            <i class="fas fa-angle-down" aria-hidden="true"></i>
+                        </span>
+                    </button>
+                </div>
+                <div class="dropdown-menu" id="dropdown-menu" role="menu">
+                    <div class="dropdown-content">
+                        <a href="../../" class="dropdown-item">
+                            Introdução
+                        </a>
+                        <hr class="dropdown-divider">
+                        <a href="../../exercicios/negativando-regiao/" class="dropdown-item">
+                            1.0 - Negativando uma região
+                        </a>
+                        <a href="../../exercicios/muda-quadrante/" class="dropdown-item">
+                            2.0 - Alterando os quadrantes de uma imagem
+                        </a>
+                        <a href="../../exercicios/labeling/" class="dropdown-item">
+                            3.0 - Labeling: Encontrando as bolhas na imagem
+                        </a>
+                        <a href="../../exercicios/equalizer/" class="dropdown-item">
+                            4.0 - Equalização
+                        </a>
+                        <a href="../../exercicios/motionDetector/" class="dropdown-item">
+                            5.0 - Detectando Movimento
+                        </a>
+                        <a href="../../exercicios/filtrosEspaciais/" class="dropdown-item">
+                            6.0 - Laplaciano + Gauss: Usando filtros na imagem
+                        </a>
+                        <a href="../../exercicios/dft/" class="dropdown-item is-active">
+                            7.0 - Filtro Homomorfico
+                        </a>
+                    </div>
+                </div>
+            </div>
+            <div class="box col-lg-9 col-12">
+                <h2 class="title is-2 is-spaced"> 
+                   7.0 - Filtor Homomorfico
+                </h2>
+                <div class="objetivo-content row">
+                    <h3 class="title is-4 is-spaced">1.1 - Objetivo</h3>
+                    <div class="col-12 mt-3">
+                        <p class="subtitle is-5 is-spaced">
+                            Utilizando o programa exemplos/dft.cpp como referência, implemente o filtro homomórfico 
+                            para melhorar imagens com iluminação irregular. Crie uma cena mal iluminada e ajuste os 
+                            parâmetros do filtro homomórfico para corrigir a iluminação da melhor forma possível. 
+                            Assuma que a imagem fornecida é em tons de cinza.
+                        </p>
+                    </div>
+                </div>
+                <div class="resolucao-content mt-5">
+                    <h3 class="title is-4 is-spaced">1.2 - Resolução</h3>
+                    <p class="subtitle is-6 is-spaced">
+                        <strong>OBS:</strong> Importante resaltar que os codigos aqui presentes estão em python. Ver explicação na página de introdução no menu ao lado.
+                    </p>
+                    <p class="subtitle is-6 is-spaced"> 
+                        A solução encontrada para resolver a questão foi a seguinte, primeiramente pegamos a imagem que desejamos realiza o filtro,
+                        após isso, comparamos a altura e a largura da imagem com a largura e altura ideal para a dft. Essa processo chamamos de padding,
+                        pois a diferença dessa comparação adicionas um padding de zero a imagem, para a mesma ficar no formato ideal para a DFT. Logo em seguida,
+                        realizamos a dft na imagem para utilizar a mesma no dominio da frequência. Para tal, usamos as seguintes funções
+                        da biblioteca openCV e numpy:
+                    </p>
+                    <p class="subtitle is-6 is-spaced">
+                        <code>cv2.dft()</code>, usado para realizar a dft. <br><code>np.fft.fftshift()</code>, usado para realizar a troca dos quadrantes da imagem.
+                    </p>
+                    <p class="subtitle is-6 is-spaced"> 
+                        Com a imagem no dominio da frequência, criamos a função <code>filtroHomomorfico()</code> que irá realizar o calculo com base na seguinte formula:
+                    </p>
+                    <img class="img img-fluid" src="../../assets/img/dft/FiltroFormula.png">
+                    <p class="subtitle is-6 is-spaced"> 
+                        Para mudar os parametros da função, utilizamos trackbars da propria biblioteca do open cv. <br>
+                        <pre class="code-content">
+                            <code>
+trackbarName = "YL "
+cv2.createTrackbar(trackbarName,"homomorfico",yv,100,setyl)
+trackbarName = "YH "
+cv2.createTrackbar(trackbarName,"homomorfico",yv,100,setyh)
+trackbarName = "C "
+cv2.createTrackbar(trackbarName,"homomorfico",cv,100,setc)
+trackbarName = "D0 "
+cv2.createTrackbar(trackbarName,"homomorfico",dv,dft_M,setd0)
+                            </code>
+                        </pre>
+                    </p>
+                    <p class="subtitle is-6 is-spaced"> 
+                        Algumas validações foram tomadas na confecção das funções de set presentes no <code>cv2.createTrackbar()</code>.
+                        <ul>
+                            <li>-> Quando a função recebia um valor zero, era trasformado em 1 para não ocasionar problemas de calculo com log(0) por exemplo.</li>
+                            <li>-> Sempre que um paramentro era mudado a função <code>filtroHomomorfico()</code> era chamada novamente.</li>
+                        </ul>
+                    </p>
+                    <br>
+                    <p class="subtitle is-6 is-spaced"> 
+                        Portanto, ao entrar na função <code>filtroHomomorfico()</code> primeiramente faremos o calculo do filtro, usando a formula mostrada e em seguida,
+                        realizaremos a DFT Inversa, a partir, da biblioteca openCV e numpy: 
+                    </p>
+                    <p class="subtitle is-6 is-spaced">
+                        <code>cv2.idft()</code>, usado para realizar a dft inversa. <br><code>np.fft.ifftshift()</code>, usado para deixa os quadrante da imagem corretas novamente.
+                    </p>
+                    <p class="subtitle is-6 is-spaced">
+                        Assim, ao final, normalizamos o resultado e apresentamos em uma janela a imagem final melhorada.
+                    </p>
+                    <pre class="code-content">
+                        <code>
+import numpy as np
+import sys
+import cv2
+import math
+
+# Adiciona variavies globais para realização dos calculos da formula do filtro homomorfico
+yh,yl,c,d0 = 1,1,1,1
+dft, dft_M, dft_N = 0,0,0
+yv,cv,dv = 0,0,0
+
+# Função Filtro Homomorfico.
+def filtroHomomorfico():
+    global yh, yl, c, d0, dft, dft_M, dft_N
+    du = np.zeros(dft.shape, dtype=np.float32)
+    for u in range(dft_M):
+        for v in range(dft_N):
+            du[u,v] = math.sqrt((u-dft_M/2.0)*(u-dft_M/2.0)+(v-dft_N/2.0)*(v-dft_N/2.0))
+    
+    du2 = cv2.multiply(du,du) / (d0*d0)
+    re = np.exp(-c*du2)
+    H = (yh - yl)*(1 - re) + yl
+    
+    # Realizando a DFT inversa
+    filtrando = cv2.mulSpectrums(dft,H,0)
+    filtrando = np.fft.ifftshift(filtrando)
+    filtrando = cv2.idft(filtrando)
+    filtrando = cv2.magnitude(filtrando[:,:,0], filtrando[:,:,1])
+    
+    #normaliza
+    cv2.normalize(filtrando,filtrando,0, 1, cv2.NORM_MINMAX)
+    filtrando = np.exp(filtrando)
+    cv2.normalize(filtrando, filtrando,0, 1, cv2.NORM_MINMAX) 
+    
+    # Apresenta resultado
+    cv2.imshow("homomorfico", filtrando)   
+    
+# Criação das funções auxiliares para filtragem.
+def setyl(yv):
+    global yl
+    yl = yv/10.0
+    if yl > yh:
+        yl = yh - 1
+    filtroHomomorfico()
+
+def setyh(yv):
+    global yh
+    yh = yv/10.0
+    if 1 > yh:
+        yh = 1
+    if yl > yh:
+        yh = yl + 1
+    filtroHomomorfico()
+
+def setc(cv):
+    global c
+    if cv == 0:
+        print('Entrei aqui quando C = 0')
+        cv = 1
+    c = cv/1000.0
+    filtroHomomorfico()
+
+def setd0(dv):
+    global d0
+    d0 = dv/10.0
+    if d0 == 0:
+        print('Entrei aqui quando d0 = 0')
+        d0 = 1
+    filtroHomomorfico()      
+
+# Pega a imagem desejada para a transformada de furrier
+img = cv2.imread("../img/dft.png", cv2.IMREAD_GRAYSCALE)
+if (img is None):
+    sys.exit("Não conseguimos abrir a imagem.")
+    
+# Mostra a imagem original
+cv2.imshow("original", img)
+
+# Transforma a imagem em ponto flutuante
+img = np.float32(img)
+
+# Pega altura e largura da imagem
+height, width = img.shape
+
+# Pega a altura e a largura ideal para a DFT
+dft_M = cv2.getOptimalDFTSize(height)
+dft_N = cv2.getOptimalDFTSize(width)
+
+# Realiza o padding da imagem adicionando zero as bordas e realiza o log da img.
+padded = cv2.copyMakeBorder(img, 0, dft_M-height,0,dft_N-width, cv2.BORDER_CONSTANT, 0) + 1
+padded = np.log(padded)
+
+# Aplica a DFT na imagem é um shift nos quadrantes
+dft = cv2.dft(padded, flags=cv2.DFT_COMPLEX_OUTPUT)
+dft = np.fft.fftshift(dft)
+img_back = 20*np.log(cv2.magnitude(dft[:,:,0],dft[:,:,1]))
+esp_freq = np.uint8(img_back)
+cv2.imshow("espectro da frequencia", esp_freq)
+cv2.imshow("homomorfico", img)
+
+trackbarName = "YL "
+cv2.createTrackbar(trackbarName,"homomorfico",yv,100,setyl)
+trackbarName = "YH "
+cv2.createTrackbar(trackbarName,"homomorfico",yv,100,setyh)
+trackbarName = "C "
+cv2.createTrackbar(trackbarName,"homomorfico",cv,100,setc)
+trackbarName = "D0 "
+cv2.createTrackbar(trackbarName,"homomorfico",dv,dft_M,setd0)
+
+cv2.waitKey(0)
+cv2.destroyAllWindows()
+                        </code>
+                    </pre>
+                </div>
+                <div class="resultado-content mt-5">
+                    <h3 class="title is-4 is-spaced">1.3 - Resultado</h3>
+                    <p class="subtitle is-6 is-spaced">
+                       Imagem Original
+                    </p>
+                    <div class="img-promp overflow-auto mb-5">
+                        <img class="img img-fluid" src="../../assets/img/dft/dft.png">
+                    </div>
+                    <p class="subtitle is-6 is-spaced">
+                        Espectro de Frequência
+                    </p>
+                    <div class="img-promp overflow-auto mb-5">
+                        <img class="img img-fluid" src="../../assets/img/dft/frequencia.png">
+                    </div>
+                    <p class="subtitle is-6 is-spaced">
+                        Resultado Final
+                    </p>
+                    <div class="img-result overflow-auto mb-5">
+                        <img class="img img-fluid" src="../../assets/img/dft/final.png">
+                    </div>
+                </div>
+                <div class="content-button">
+                    <a 
+                        class="button is-link is-light is-spaced button-github" 
+                        href="#dft" 
+                    >
+                    <span class="icon" style="color: var(--github);">
+                        <i class="fas fa-angle-up" aria-hidden="true"></i>
+                    </span>   
+                    Back to top!
+                </a>
+                </div>
+            </div>
+        </section>
+        <footer class="footer hero is-primary is-small">
+            <div class="content has-text-centered">
+            <p>
+                @2021, por Atyson Jaime.
+            </p>
+            </div>
+        </footer>
+        <!-- Script Links -->
+        <script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.min.js" integrity="sha384-QJHtvGhmr9XOIpI6YVutG+2QOK9T+ZnN4kzFN1RtK3zEFEIsxhlmWl5/YESvpZ13" crossorigin="anonymous"></script>
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.3.1/highlight.min.js"></script>
+        <script src="../../assets/js/main.js"></script>
+        <script>hljs.highlightAll();</script>
+    </body>
+</html>
