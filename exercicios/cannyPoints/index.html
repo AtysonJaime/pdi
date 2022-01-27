@@ -1,0 +1,325 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+    <head>
+        <meta charset="UTF-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>PDI - Exercícios</title>
+        <link rel="apple-touch-icon" sizes="180x180" href="../../assets/img/apple-touch-icon.png">
+        <link rel="icon" type="image/png" sizes="32x32" href="../../assets/img/favicon-16x16.png">
+        <link rel="icon" type="image/png" sizes="16x16" href="../../assets/img/favicon-32x32.png">
+        
+        <!-- CCS Links -->
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
+        <link rel="stylesheet" href="https://pro.fontawesome.com/releases/v5.10.0/css/all.css" integrity="sha384-AYmEC3Yw5cVb3ZcuHtOA93w35dYTsvhLPVnYs9eStHfGJvOvKxVfELGroGkvsg+p" crossorigin="anonymous"/>
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.3/css/bulma.min.css">
+        <link rel="stylesheet" href="../../assets/css/style.css">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.3.1/styles/atom-one-dark.min.css">
+    </head>
+    <body id='canny'>
+        <section class="hero is-primary top-content">
+            <div class="hero-body">
+            <p class="title">
+                DCA0445 - Processamento Digital de Imagem
+            </p>
+            <p class="subtitle">
+                Aluno: Atyson Jaime de Sousa Martins
+            </p>
+            </div>
+        </section>
+        <section class="section body-content row">
+            <div class="dropdown col-lg-3 col-12 mb-4">
+                <div class="dropdown-trigger">
+                    <button class="button button-dropdown" aria-haspopup="true" aria-controls="dropdown-menu">
+                        <span class="icon is-small">
+                            <i class="fas fa-book" aria-hidden="true"></i>
+                        </span>
+                        <span>Exercicios</span>
+                        <span class="icon is-small">
+                            <i class="fas fa-angle-down" aria-hidden="true"></i>
+                        </span>
+                    </button>
+                </div>
+                <div class="dropdown-menu" id="dropdown-menu" role="menu">
+                    <div class="dropdown-content">
+                        <a href="../../" class="dropdown-item">
+                            Introdução
+                        </a>
+                        <hr class="dropdown-divider">
+                        <a href="../../exercicios/negativando-regiao/" class="dropdown-item">
+                            1.0 - Negativando uma região
+                        </a>
+                        <a href="../../exercicios/muda-quadrante/" class="dropdown-item">
+                            2.0 - Alterando os quadrantes de uma imagem
+                        </a>
+                        <a href="../../exercicios/labeling/" class="dropdown-item">
+                            3.0 - Labeling: Encontrando as bolhas na imagem
+                        </a>
+                        <a href="../../exercicios/equalizer/" class="dropdown-item">
+                            4.0 - Equalização
+                        </a>
+                        <a href="../../exercicios/motionDetector/" class="dropdown-item">
+                            5.0 - Detectando Movimento
+                        </a>
+                        <a href="../../exercicios/filtrosEspaciais/" class="dropdown-item">
+                            6.0 - Laplaciano + Gauss: Usando filtros na imagem
+                        </a>
+                        <a href="../../exercicios/dft/" class="dropdown-item">
+                            7.0 - Filtro Homomorfico
+                        </a>
+                        <a href="../../exercicios/cannyPoints/" class="dropdown-item is-active">
+                            8.0 - Filtro Canny + Pontilhismo
+                        </a>
+                    </div>
+                </div>
+            </div>
+            <div class="box col-lg-9 col-12">
+                <h2 class="title is-2 is-spaced"> 
+                    8.0 - Filtro Canny + Pontilhismo
+                </h2>
+                <div class="objetivo-content row">
+                    <h3 class="title is-4 is-spaced">1.1 - Objetivo</h3>
+                    <div class="col-12 mt-3">
+                        <p class="subtitle is-5 is-spaced">
+                            Utilizando os programas exemplos/canny.cpp e exemplos/pontilhismo.cpp como referência, 
+                            implemente um programa cannypoints.cpp. A idéia é usar as bordas produzidas pelo algoritmo de 
+                            Canny para melhorar a qualidade da imagem pontilhista gerada. A forma como a informação de borda 
+                            será usada é livre. Entretanto, são apresentadas algumas sugestões de técnicas que poderiam ser 
+                            utilizadas:
+                        </p>
+                        <p class="subtitle is-5 is-spaced"> -> Desenhar pontos grandes na imagem pontilhista básica;</p>
+                        <p class="subtitle is-5 is-spaced"> -> Usar a posição dos pixels de borda encontrados pelo algoritmo de Canny para desenhar pontos nos respectivos locais na imagem gerada.</p>
+                        <p class="subtitle is-5 is-spaced"> -> Experimente ir aumentando os limiares do algoritmo de Canny e, para cada novo par de limiares, desenhar círculos cada vez menores nas posições encontradas.</p>
+                    </div>
+                </div>
+                <div class="resolucao-content mt-5">
+                    <h3 class="title is-4 is-spaced">1.2 - Resolução</h3>
+                    <p class="subtitle is-6 is-spaced">
+                        <strong>OBS:</strong> Importante resaltar que os codigos aqui presentes estão em python. Ver explicação na página de introdução no menu ao lado.
+                    </p>
+                    <p class="subtitle is-6 is-spaced"> 
+                        Para solucionar esse problemas vamos dividilo em duas partes. A primeira, realizar o filtro canny e a sugunda parte criar uma imagem em pontilhismo.
+                    </p>
+                    <p class="subtitle is-6 is-spaced">
+                        Começando com a filtragem de canny, utilizaremos a função já disponibilizada pelo openCV: <code>cv2.Canny(img,T1, T2)</code>. 
+                        O primeiro parametro é a imagem que você deseja passar o filtro, T1 e T2 são os valores de Threshold, vale salientar também, que T2 > T1. Para o projeto, criei a função:
+                    </p>
+                    <pre class="code-content">
+                        <code>
+def filtroCanny(img):
+    global top_slider, imgCanny
+    imgCanny = cv2.Canny(img,top_slider, 3*top_slider)
+    return imgCanny
+                        </code>
+                    </pre>
+                    <p class="subtitle is-6 is-spaced">
+                        Falando um pouco dessa função, para os valores de Threshold usei uma unica variavel apenas multiplicando o valor por 3 para aumenta-lo.
+                        Como padrão, setei a variavel top_slider no valor de 100.
+                    </p>
+                    <p class="subtitle is-6 is-spaced">
+                        Continuando, a segunda parte do codigo foi na confecção da função que cria uma imagem em pontilhismo, para tal, usei a função <code>cv2.circle(img, (j, i), radius, color, radius)</code>.
+                        O primeiro parametro é a imagem que você deseja criar o circulo, o segundo são os pontos centrais do circulo, o radius seria o raio do circulo e a color será a cor desse circulo. 
+                        Do mesmo modo, como a função para o canny criei a minha função para o pontilhismo:
+                    </p>
+                    <pre class="code-content">
+                        <code>
+def pontilhismo(img):
+    height, width = img.shape
+
+    # Pega o valor do raio aleatório
+    radius = random.randint(1, 5)
+
+    # Cria uma copia da img
+    imgCopy = img.copy() 
+
+    # Interação para criar os circulos aletoriamente
+    for i in range(0,height,radius):
+        for j in range(0,width,radius):
+            number = random.randint(0, 1)
+            if number == 1:
+                # Pega a cor do pixel no ponto da matriz
+                gray = int(img[i][j])
+                color = (gray,gray,gray)
+                # Cria um circulo com o raio encontrado aleatoriamente
+                cv2.circle(imgCopy, (j,i), radius, color, radius)
+                # Pega um novo valor para o raio
+                radius = random.randint(1, 5)
+
+    return imgCopy
+                        </code>
+                    </pre>
+                    <p class="subtitle is-6 is-spaced">
+                        Basicamente, essa função constroi uma imagem com pontilhismo randomicamente a partir de uma imagem passada como parametro.
+                        Ou seja, a função caminha pela imagem criando circulos de raios randomicos na cor do pixel(i,j).
+                    </p>
+                    <p class="subtitle is-6 is-spaced">
+                        Com os retornos dessas funções, chegamos ao final do codigo, onde juntaremos o filtro canny com a imagem pontilhimos.
+                    </p>
+                    <pre class="code-content">
+                        <code>
+imgCanny = filtroCanny(img)
+imgPonti = pontilhismo(img)
+
+heightPonti, widthPonti = imgPonti.shape
+radius = 4
+imgCannyPoint = imgPonti.copy()
+
+for i in range(heightPonti):
+    for j in range(widthPonti):
+        if (imgCanny[i][j] == 255):
+            gray = int(img[i][j])
+            color = (gray, gray, gray)
+            cv2.circle(imgCannyPoint, (j, i), radius, color, radius)
+                        </code>
+                    </pre>
+                    <p class="subtitle is-6 is-spaced">
+                       Explicando a parte final, ela segue a mesma logica presente na função <code>pontilhimos()</code>.
+                       Iremos caminha pela imgCanny, verificando seus pixel e se seu valor for igual a 255, criaremos um circulo na imagem anteriores pontilhada de raio definido
+                       para ficar em evidência comparada aos outros. Assim, teremos as bordas aparentes na imagem pontilhada.
+                    </p>
+                    <p class="subtitle is-6 is-spaced">
+                        O Codigo completo, e os resultados encontrados podem ser visualizados logo abaixo.
+                    </p>
+                    <h3 class="title is-4 is-spaced">Codigo Completo</h3>
+                    <pre class="code-content">
+                        <code>
+import numpy as np
+import sys
+import cv2
+import random
+
+# Variaveis globais
+top_slider = 100;
+
+# Realiza o filtro de Canny na img desejada
+def filtroCanny(img):
+    global top_slider, imgCanny
+    imgCanny = cv2.Canny(img,top_slider, 3*top_slider)
+    return imgCanny
+
+
+# Cria uma imagem em Pontilhimos
+def pontilhismo(img):
+    height, width = img.shape
+    
+    # Pega o valor do raio aleatório
+    radius = random.randint(1, 5)
+    
+    # Cria uma copia da img
+    imgCopy = img.copy() 
+    
+    # Interação para criar os circulos aletoriamente
+    for i in range(0,height,radius):
+        for j in range(0,width,radius):
+            number = random.randint(0, 1)
+            if number == 1:
+                # Pega a cor do pixel no ponto da matriz
+                gray = int(img[i][j])
+                color = (gray,gray,gray)
+                # Cria um circulo com o raio encontrado aleatoriamente
+                cv2.circle(imgCopy, (j,i), radius, color, radius)
+                # Pega um novo valor para o raio
+                radius = random.randint(1, 5)
+    
+    return imgCopy
+            
+            
+img = cv2.imread("../img/dft.png", cv2.IMREAD_GRAYSCALE)
+if (img is None):
+    sys.exit("Não conseguimos abrir a imagem.")
+
+height, width = img.shape
+
+cv2.imshow("Original", img)
+
+# Canny sendo feito aqui!
+# cv2.imshow("canny", img)
+# trackbarName = "Threshold inferior"
+# cv2.createTrackbar(trackbarName,"canny",top_slider,top_slider_max, setTh)
+imgCanny = filtroCanny(img)
+cv2.imshow("Canny", imgCanny)
+# -----
+
+# Pontilhismo sendo feito aqui!
+imgPonti = pontilhismo(img)
+cv2.imshow("pontilhismo", imgPonti)
+# ----
+
+# Usando Canny com Pontilhismo
+heightPonti, widthPonti = imgPonti.shape
+radius = 4 # Os circulos das bordas terão raio 4, assim ficara em evidência comparado aos outros.
+
+imgCannyPoint = imgPonti.copy()
+
+# Verifica se na img de canny, o pixel é 255. Caso seja, cria um circulo de raio 6 no msm pixel da img canny com point
+for i in range(heightPonti):
+    for j in range(widthPonti):
+        if (imgCanny[i][j] == 255):
+            gray = int(img[i][j])
+            color = (gray, gray, gray)
+            cv2.circle(imgCannyPoint, (j, i), radius, color, radius)
+
+cv2.imshow("cannypoint", imgCannyPoint)
+
+
+cv2.waitKey(0)
+cv2.destroyAllWindows()
+                        </code>
+                    </pre>
+                </div>
+                <div class="resultado-content mt-5">
+                    <h3 class="title is-4 is-spaced">1.3 - Resultado</h3>
+                    <p class="subtitle is-6 is-spaced">
+                       Imagem Original
+                    </p>
+                    <div class="img-promp overflow-auto mb-5">
+                        <img class="img img-fluid" src="../../assets/img/canny-points/original.png">
+                    </div>
+                    <p class="subtitle is-6 is-spaced">
+                        Imagem Filtro Canny
+                    </p>
+                    <div class="img-promp overflow-auto mb-5">
+                        <img class="img img-fluid" src="../../assets/img/canny-points/canny.png">
+                    </div>
+                    <p class="subtitle is-6 is-spaced">
+                        Imagem Pontilhimos
+                    </p>
+                    <div class="img-promp overflow-auto mb-5">
+                        <img class="img img-fluid" src="../../assets/img/canny-points/pontilhismo.png">
+                    </div>
+                    <p class="subtitle is-6 is-spaced">
+                        Resultado Final
+                    </p>
+                    <div class="img-result overflow-auto mb-5">
+                        <img class="img img-fluid" src="../../assets/img/canny-points/cannyPoints.png">
+                    </div>
+                </div>
+                <div class="content-button">
+                    <a 
+                        class="button is-link is-light is-spaced button-github" 
+                        href="#canny" 
+                    >
+                    <span class="icon" style="color: var(--github);">
+                        <i class="fas fa-angle-up" aria-hidden="true"></i>
+                    </span>   
+                    Back to top!
+                </a>
+                </div>
+            </div>
+        </section>
+        <footer class="footer hero is-primary is-small">
+            <div class="content has-text-centered">
+            <p>
+                @2021, por Atyson Jaime.
+            </p>
+            </div>
+        </footer>
+        <!-- Script Links -->
+        <script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.min.js" integrity="sha384-QJHtvGhmr9XOIpI6YVutG+2QOK9T+ZnN4kzFN1RtK3zEFEIsxhlmWl5/YESvpZ13" crossorigin="anonymous"></script>
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.3.1/highlight.min.js"></script>
+        <script src="../../assets/js/main.js"></script>
+        <script>hljs.highlightAll();</script>
+    </body>
+</html>
